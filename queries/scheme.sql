@@ -1,7 +1,7 @@
 /* https://vertabelo.com/blog/again-and-again-managing-recurring-events-in-a-data-model/ */
 CREATE SCHEMA scheduling AUTHORIZATION admin
     CREATE TABLE recurring_type (
-        id INT GENERATED ALWAYS AS IDENTITY,
+        id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         type VARCHAR(20) NOT NULL
     )
     CREATE TABLE "user" (

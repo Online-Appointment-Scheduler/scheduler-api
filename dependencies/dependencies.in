@@ -3,3 +3,4 @@ djangorestframework
 python-dotenv
 django-filter
 markdown
+psycopg2

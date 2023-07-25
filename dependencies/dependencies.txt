@@ -15,7 +15,9 @@ django-filter==23.2
     # via -r .\dependencies\dependencies.in
 djangorestframework==3.14.0
     # via -r .\dependencies\dependencies.in
-markdown==3.4.3
+markdown==3.4.4
+    # via -r .\dependencies\dependencies.in
+psycopg2==2.9.6
     # via -r .\dependencies\dependencies.in
 python-dotenv==1.0.0
     # via -r .\dependencies\dependencies.in
