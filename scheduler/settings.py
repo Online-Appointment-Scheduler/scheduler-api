@@ -79,6 +79,9 @@ DATABASES = {
         'PASSWORD': f'{os.environ.get("DB_PASSWORD")}',
         'HOST': f'{os.environ.get("DB_HOST")}',
         'PORT': f'{os.environ.get("DB_PORT")}',
+        'OPTIONS': {
+                'options': '-c search_path=scheduling,public'
+            },
     }
 }
 
