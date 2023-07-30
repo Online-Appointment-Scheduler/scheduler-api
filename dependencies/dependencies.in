@@ -4,3 +4,5 @@ python-dotenv
 django-filter
 markdown
 psycopg2
+social-auth-app-django
+https://github.com/python-social-auth/social-core/archive/master.zip

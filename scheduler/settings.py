@@ -11,7 +11,6 @@ dotenv.load_dotenv(dotenv_path)
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 
@@ -19,7 +18,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'rest_framework',
-    'authorization.apps.AuthorizationConfig',
+    'authentication.apps.AuthenticationConfig',
     'scheduling.apps.SchedulingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.telegram.TelegramAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
