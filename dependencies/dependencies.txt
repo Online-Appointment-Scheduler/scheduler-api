@@ -12,21 +12,28 @@ cffi==1.15.1
     # via cryptography
 charset-normalizer==3.2.0
     # via requests
-cryptography==41.0.2
-    # via social-auth-core
+cryptography==41.0.3
+    # via
+    #   djangorestframework-simplejwt
+    #   social-auth-core
 defusedxml==0.7.1
     # via
     #   python3-openid
     #   social-auth-core
-django==4.2.3
+django==4.2.4
     # via
     #   -r .\dependencies\dependencies.in
     #   django-filter
     #   djangorestframework
+    #   djangorestframework-simplejwt
     #   social-auth-app-django
 django-filter==23.2
     # via -r .\dependencies\dependencies.in
 djangorestframework==3.14.0
+    # via
+    #   -r .\dependencies\dependencies.in
+    #   djangorestframework-simplejwt
+djangorestframework-simplejwt[crypto]==5.2.2
     # via -r .\dependencies\dependencies.in
 idna==3.4
     # via requests
@@ -41,7 +48,9 @@ psycopg2==2.9.6
 pycparser==2.21
     # via cffi
 pyjwt==2.8.0
-    # via social-auth-core
+    # via
+    #   djangorestframework-simplejwt
+    #   social-auth-core
 python-dotenv==1.0.0
     # via -r .\dependencies\dependencies.in
 python3-openid==3.2.0
