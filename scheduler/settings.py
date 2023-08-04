@@ -10,6 +10,7 @@ dotenv_path = join(BASE_DIR, '.dev.env')
 dotenv.load_dotenv(dotenv_path)
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+AUTH_BOT_TOKEN = os.environ.get("AUTH_BOT_SECRET")
 
 DEBUG = True
 ALLOWED_HOSTS = ['*']
