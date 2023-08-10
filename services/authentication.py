@@ -1,4 +1,3 @@
-from authentication.serializers import TelegramAuthCreditsSerializer
 from scheduler.settings import AUTH_BOT_TOKEN
 import hashlib
 import hmac

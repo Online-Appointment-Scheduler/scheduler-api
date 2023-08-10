@@ -17,23 +17,14 @@ class UnixEpochDateTimeField(serializers.DateTimeField):
         # Convert datetime object to Unix epoch time
         if value is None:
             return None
-        return int(value.timestamp())
+        return str(value.timestamp())
 
 
 class TelegramAuthCreditsSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
+    id = serializers.CharField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     username = serializers.CharField()
     photo_url = serializers.CharField()
     auth_date = UnixEpochDateTimeField()
     hash = serializers.CharField()
-
-    def validate_hash(self, value):
-        if not value or value is False:
-            raise ValidationError("Hash is required and cannot be empty")
-        data_check_string = telegram_auth_to_data_check_string(self.data)
-        if not validate_auth_telegram(data_check_string, value):
-            raise ValidationError("The hash wasn't originated from Telegram. The auth data and its hash are different "
-                                  "or the secret is invalid")
-        return value
