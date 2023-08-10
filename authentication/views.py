@@ -6,6 +6,10 @@ from rest_framework.response import Response
 from scheduling.models import Manager
 from rest_framework.permissions import AllowAny
 from scheduler.settings import AUTH_BOT_TOKEN
+from logging import getLogger
+
+
+logger = getLogger(__name__)
 
 
 class TelegramAuthView(CreateAPIView):
@@ -20,8 +24,7 @@ class TelegramAuthView(CreateAPIView):
         try:
             serializer.is_valid(raise_exception=True)
         except ValidationError:
-            # log
-            raise
+            logger.error(f"Failed to validate Telegram auth data with serializer")
         data = serializer.data
         verify_telegram_authentication(AUTH_BOT_TOKEN, data)
         return Response()
