@@ -29,6 +29,8 @@ django==4.2.4
     #   social-auth-app-django
 django-filter==23.2
     # via -r .\dependencies\dependencies.in
+django-telegram-login==0.2.3
+    # via -r .\dependencies\dependencies.in
 djangorestframework==3.14.0
     # via
     #   -r .\dependencies\dependencies.in
@@ -43,7 +45,7 @@ oauthlib==3.2.2
     # via
     #   requests-oauthlib
     #   social-auth-core
-psycopg2==2.9.6
+psycopg2==2.9.7
     # via -r .\dependencies\dependencies.in
 pycparser==2.21
     # via cffi

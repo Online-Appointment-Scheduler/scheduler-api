@@ -1,17 +1,11 @@
-from django.shortcuts import render
-from rest_framework.generics import RetrieveAPIView, CreateAPIView, GenericAPIView
-from rest_framework.views import APIView
-
-from services.authentication import telegram_auth_to_data_check_string, validate_auth_telegram
+from rest_framework.generics import CreateAPIView
+from django_telegram_login.authentication import verify_telegram_authentication
 from .serializers import TelegramAuthCreditsSerializer
 from rest_framework.serializers import ValidationError
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
 from scheduling.models import Manager
 from rest_framework.permissions import AllowAny
+from scheduler.settings import AUTH_BOT_TOKEN
 
 
 class TelegramAuthView(CreateAPIView):
@@ -29,10 +23,6 @@ class TelegramAuthView(CreateAPIView):
             # log
             raise
         data = serializer.data
-        data_check_string = telegram_auth_to_data_check_string(data)
-        if not validate_auth_telegram(data_check_string, data["hash"]):
-            raise ValidationError("The hash wasn't originated from Telegram. The auth data and its hash are different "
-                                  "or the secret is invalid")
-        jwt_token = RefreshToken.for_user(data)
-        return Response(jwt_token, )
+        verify_telegram_authentication(AUTH_BOT_TOKEN, data)
+        return Response()
         pass

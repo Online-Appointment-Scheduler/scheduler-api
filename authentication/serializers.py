@@ -1,7 +1,5 @@
 from datetime import datetime
 from rest_framework import serializers
-from services.authentication import validate_auth_telegram, telegram_auth_to_data_check_string
-from rest_framework.serializers import ValidationError
 
 
 class UnixEpochDateTimeField(serializers.DateTimeField):
@@ -17,7 +15,7 @@ class UnixEpochDateTimeField(serializers.DateTimeField):
         # Convert datetime object to Unix epoch time
         if value is None:
             return None
-        return str(value.timestamp())
+        return str(int(value.timestamp()))
 
 
 class TelegramAuthCreditsSerializer(serializers.Serializer):
