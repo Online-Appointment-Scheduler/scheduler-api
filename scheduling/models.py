@@ -16,16 +16,12 @@ class AttendEventRequest(models.Model):
     is_cancelled = models.BooleanField()
 
     class Meta:
-        db_table = 'attend_event_request'
         unique_together = (('event', 'member'),)
 
 
 class Blacklist(models.Model):
     manager = models.ForeignKey('Manager', models.CASCADE)
     member = models.ForeignKey('Member', models.CASCADE)
-
-    class Meta:
-        db_table = 'blacklist'
 
 
 class Event(models.Model):
@@ -36,12 +32,9 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     is_recurring = models.BooleanField()
-    created_by = models.ForeignKey('User', models.CASCADE, db_column='created_by')
+    created_by = models.ForeignKey('authentication.CustomUser', models.CASCADE, db_column='created_by')
     created_date = models.DateField()
     parent_event = models.ForeignKey('self', models.SET_NULL, blank=True, null=True)
-
-    class Meta:
-        db_table = 'event'
 
 
 class EventInstanceException(models.Model):
@@ -52,18 +45,12 @@ class EventInstanceException(models.Model):
     end_date = models.DateField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    created_by = models.ForeignKey('User', models.CASCADE, db_column='created_by')
+    created_by = models.ForeignKey('authentication.CustomUser', models.CASCADE, db_column='created_by')
     created_date = models.DateField()
-
-    class Meta:
-        db_table = 'event_instance_exception'
 
 
 class Lobby(models.Model):
     manager = models.ForeignKey('Member', models.CASCADE, db_column='manager')
-
-    class Meta:
-        db_table = 'lobby'
 
 
 class LobbyJoinRequest(models.Model):
@@ -71,31 +58,22 @@ class LobbyJoinRequest(models.Model):
     member = models.ForeignKey('Member', models.CASCADE)
 
     class Meta:
-        db_table = 'lobby_join_request'
+        
         unique_together = (('lobby', 'member'),)
 
 
 class Manager(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)
-
-    class Meta:
-        db_table = 'manager'
+    user = models.OneToOneField('authentication.CustomUser', models.DO_NOTHING, primary_key=True)
 
 
 class Member(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)
+    user = models.OneToOneField('authentication.CustomUser', models.DO_NOTHING, primary_key=True)
     status = models.CharField(max_length=20, blank=True, null=True)
-
-    class Meta:
-        db_table = 'member'
 
 
 class MembersToLobby(models.Model):
     lobby = models.ForeignKey(Lobby, models.DO_NOTHING)
     member = models.ForeignKey(Member, models.DO_NOTHING)
-
-    class Meta:
-        db_table = 'members_to_lobby'
 
 
 class RecurringPattern(models.Model):
@@ -107,22 +85,6 @@ class RecurringPattern(models.Model):
     day_of_month = models.SmallIntegerField(blank=True, null=True)
     month_of_year = models.SmallIntegerField(blank=True, null=True)
 
-    class Meta:
-        db_table = 'recurring_pattern'
-
 
 class RecurringType(models.Model):
     type = models.CharField(max_length=20)
-
-    class Meta:
-        db_table = 'recurring_type'
-
-
-class User(models.Model):
-    first_name = models.CharField(max_length=70, blank=True, null=True)
-    second_name = models.CharField(max_length=70, blank=True, null=True)
-    last_name = models.CharField(max_length=70, blank=True, null=True)
-
-    class Meta:
-        db_table = 'user'
-

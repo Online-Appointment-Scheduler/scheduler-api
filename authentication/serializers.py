@@ -1,5 +1,6 @@
 from datetime import datetime
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UnixEpochDateTimeField(serializers.DateTimeField):
@@ -18,7 +19,7 @@ class UnixEpochDateTimeField(serializers.DateTimeField):
         return str(int(value.timestamp()))
 
 
-class TelegramAuthCreditsSerializer(serializers.Serializer):
+class TelegramAuthCreditsSerializer(TokenObtainPairSerializer):
     id = serializers.CharField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -26,3 +27,11 @@ class TelegramAuthCreditsSerializer(serializers.Serializer):
     photo_url = serializers.CharField()
     auth_date = UnixEpochDateTimeField()
     hash = serializers.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password'].required = False
+
+    def validate(self, attrs):
+        attrs.update({'password': ''})
+        return super(TelegramAuthCreditsSerializer, self).validate(attrs)

@@ -28,12 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django',
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.telegram.TelegramAuth',
-    'django.contrib.auth.backends.ModelBackend',
+    'authentication.backends.TelegramAuthBackend',
 )
 
 MIDDLEWARE = [
@@ -45,6 +43,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = "authentication.CustomUser"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -176,7 +176,8 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    # Telegram auth is valid during the next 24 hours
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
