@@ -41,8 +41,7 @@ class TelegramAuthView(TokenViewBase):
             return Response(status=HTTP_400_BAD_REQUEST)
         except TelegramDataIsOutdatedError:
             return Response(status=HTTP_400_BAD_REQUEST)
-
-        telegram_id = data.get("telegram_id")
+        telegram_id = data.get("id")
         username = data.get("username")
         user = authenticate(request, telegram_id=telegram_id, username=username)
         if user is None:
@@ -51,5 +50,4 @@ class TelegramAuthView(TokenViewBase):
             except IntegrityError:
                 logger.warning(f"Tried to create new user with already existing Telegram_id")
                 return Response(status=HTTP_400_BAD_REQUEST)
-        response = super().post(request, *args, **kwargs)
-        return response
+        return Response()
