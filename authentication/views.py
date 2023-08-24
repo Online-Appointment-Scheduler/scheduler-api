@@ -48,8 +48,6 @@ class TelegramAuthView(TokenViewBase):
             try:
                 CustomUser.objects.create_user(telegram_id=telegram_id, username=username)
             except IntegrityError:
-                logger.warning(f"Tried to create new user with already existing Telegram_id")
-                user = CustomUser.objects.all().first()
-                logger.warning(f"{user.telegram_id} : {user.username}")
+                logger.error(f"Tried to create new user with already existing Telegram_id")
                 return Response(status=HTTP_400_BAD_REQUEST)
         return Response()
