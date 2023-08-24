@@ -1,6 +1,7 @@
 from datetime import datetime
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UnixEpochDateTimeField(serializers.DateTimeField):
@@ -27,3 +28,15 @@ class TelegramAuthCreditsSerializer(serializers.Serializer):
     photo_url = serializers.CharField()
     auth_date = UnixEpochDateTimeField()
     hash = serializers.CharField()
+
+
+class TelegramTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['telegram_id'] = user.telegram_id
+        # ...
+
+        return token

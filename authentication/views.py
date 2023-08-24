@@ -1,7 +1,10 @@
 from django_telegram_login.authentication import verify_telegram_authentication
 from django_telegram_login.errors import NotTelegramDataError, TelegramDataIsOutdatedError
 from django.contrib.auth import authenticate
-from .serializers import TelegramAuthCreditsSerializer
+from rest_framework import status
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
+from .serializers import TelegramAuthCreditsSerializer, TelegramTokenObtainPairSerializer
 from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
@@ -46,8 +49,24 @@ class TelegramAuthView(TokenViewBase):
         user = authenticate(request, telegram_id=telegram_id, username=username)
         if user is None:
             try:
-                CustomUser.objects.create_user(telegram_id=telegram_id, username=username)
+                user = CustomUser.objects.create_user(telegram_id=telegram_id, username=username)
             except IntegrityError:
                 logger.error(f"Tried to create new user with already existing Telegram_id")
                 return Response(status=HTTP_400_BAD_REQUEST)
-        return Response()
+        tokens = get_jwt_tokens_object(user)
+        return Response(data=tokens, status=status.HTTP_200_OK)
+
+
+def get_jwt_tokens_object(user: CustomUser) -> dict:
+    username = user.username
+    password = user.password
+    data = {
+        "username": username,
+        "password": password,
+    }
+    obtain_pair_serializer = TelegramTokenObtainPairSerializer(data=data)
+    try:
+        obtain_pair_serializer.is_valid(raise_exception=True)
+    except TokenError as e:
+        raise InvalidToken(e.args[0])
+    return obtain_pair_serializer.validated_data

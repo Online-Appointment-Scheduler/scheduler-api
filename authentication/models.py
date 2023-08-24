@@ -15,7 +15,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, telegram_id, username, **extra_fields):
+    def create_superuser(self, username, telegram_id, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -24,7 +24,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self.create_user(telegram_id, username, **extra_fields)
+        return self.create_user(username, telegram_id, **extra_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -32,7 +32,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=70, blank=True, null=True)
     last_name = models.CharField(max_length=70, blank=True, null=True)
-    password = models.CharField(max_length=128, null=True, blank=True)
+    password = models.CharField(max_length=128, null=True, default="password")
 
     objects = CustomUserManager()
 
