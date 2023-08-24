@@ -2,7 +2,9 @@ from django.contrib.auth.backends import ModelBackend
 
 from authentication.models import CustomUser
 from custom_exceptions.authentication import TelegramIdAbsentException, UsernameAbsentException
+from logging import getLogger
 
+logger = getLogger()
 
 class TelegramAuthBackend(ModelBackend):
 
@@ -16,7 +18,7 @@ class TelegramAuthBackend(ModelBackend):
             if username == '':
                 raise UsernameAbsentException("username wasn't present in the payload")
         try:
-            return CustomUser.objects.get(pk=telegram_id, username=username)
+            return CustomUser.objects.get(telegram_id=telegram_id, username=username)
         except CustomUser.DoesNotExist:
             return None
 
