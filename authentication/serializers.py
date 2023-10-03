@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -35,8 +36,6 @@ class TelegramTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
         token['telegram_id'] = user.telegram_id
-        # ...
 
         return token

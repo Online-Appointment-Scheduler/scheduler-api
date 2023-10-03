@@ -60,7 +60,7 @@ class TelegramAuthView(TokenViewBase):
 def get_jwt_tokens_object(user: CustomUser) -> dict:
     data = {
         "username": user.username,
-        "password": user.password,
+        "password": user.telegram_id,
     }
     obtain_pair_serializer = TelegramTokenObtainPairSerializer(data=data)
     try:

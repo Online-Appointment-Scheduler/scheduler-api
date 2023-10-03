@@ -12,6 +12,7 @@ class CustomUserManager(BaseUserManager):
         if not telegram_id:
             raise ValueError(_('The Telegram id field must be set'))
         user = self.model(telegram_id=telegram_id, username=username, **extra_fields)
+        user.set_unusable_password()
         user.save(using=self._db)
         return user
 
@@ -31,7 +32,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=70, blank=True, null=True)
     last_name = models.CharField(max_length=70, blank=True, null=True)
-    password = models.CharField(max_length=128, null=True, default="password")
+    password = None
 
     is_staff = models.BooleanField(default=False)
 

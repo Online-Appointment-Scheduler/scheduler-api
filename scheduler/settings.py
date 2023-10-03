@@ -113,8 +113,13 @@ LOGGING = {
         },
     },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
         'file': {
-            'level': 'DEBUG',  # Set the desired log level
+            'level': 'WARNING',  # Set the desired log level
             'class': 'logging.FileHandler',
             'filename': '.log',  # Specify the log file name
             'formatter': 'verbose',  # Use the defined formatter
@@ -123,7 +128,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
